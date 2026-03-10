@@ -297,3 +297,58 @@ export async function deleteTax(id: string) {
     revalidatePath('/trabajo/tributacion')
     return { success: true }
 }
+
+// ═══════════════════════════════════════════
+// CHECKLIST DIARIO (WORK ROUTINES)
+// ═══════════════════════════════════════════
+export async function addWorkRoutine(name: string, time_of_day: string = 'any') {
+    const supabase = await db()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'No autenticado' }
+
+    if (!name.trim()) return { error: 'El nombre es obligatorio' }
+
+    const { error } = await supabase.from('work_routines').insert({
+        user_id: user.id,
+        name: name.trim(),
+        time_of_day
+    })
+
+    if (error) { console.error('[addWorkRoutine]', error); return { error: error.message } }
+    revalidatePath('/trabajo')
+    return { success: true }
+}
+
+export async function toggleWorkRoutineLog(routineId: string, dateStr: string, completed: boolean) {
+    const supabase = await db()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'No autenticado' }
+
+    if (completed) {
+        // Insert (o si ya existe fallará silenciosamente por Unique o ON CONFLICT)
+        const { error } = await supabase.from('work_routine_logs').upsert({
+            routine_id: routineId,
+            user_id: user.id,
+            date: dateStr,
+            completed: true
+        }, { onConflict: 'routine_id, date' })
+        if (error) return { error: error.message }
+    } else {
+        // Delete logs for that date
+        const { error } = await supabase.from('work_routine_logs')
+            .delete()
+            .match({ routine_id: routineId, user_id: user.id, date: dateStr })
+        if (error) return { error: error.message }
+    }
+
+    revalidatePath('/trabajo')
+    return { success: true }
+}
+
+export async function deleteWorkRoutine(id: string) {
+    const supabase = await db()
+    const { error } = await supabase.from('work_routines').delete().eq('id', id)
+    if (error) return { error: error.message }
+    revalidatePath('/trabajo')
+    return { success: true }
+}

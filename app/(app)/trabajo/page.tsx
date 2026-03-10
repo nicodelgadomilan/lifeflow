@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Briefcase, FolderKanban, CheckSquare, Users, TrendingUp, TrendingDown, Receipt, CalendarClock, ArrowRight } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils/formatters'
 import Link from 'next/link'
+import { WorkRoutinesWidget } from '@/components/trabajo/work-routines-widget'
 
 export default async function TrabajoPage() {
     const supabase = await createClient()
@@ -15,7 +16,8 @@ export default async function TrabajoPage() {
         { data: meetings },
         { data: receivables },
         { data: payables },
-        { data: taxes }
+        { data: taxes },
+        { data: routines }
     ] = await Promise.all([
         supabase.from('work_projects').select('*').eq('user_id', user.id),
         supabase.from('work_tasks').select('*').eq('user_id', user.id).neq('status', 'done'),
@@ -23,6 +25,7 @@ export default async function TrabajoPage() {
         supabase.from('work_receivables').select('*').eq('user_id', user.id).eq('status', 'pending'),
         supabase.from('work_payables').select('*').eq('user_id', user.id).eq('status', 'pending'),
         supabase.from('work_taxes').select('*').eq('user_id', user.id).eq('status', 'pending').order('due_date', { ascending: true }),
+        supabase.from('work_routines').select('*').eq('user_id', user.id).order('created_at', { ascending: true })
     ])
 
     const proj = (projects || []) as any[]
@@ -31,6 +34,7 @@ export default async function TrabajoPage() {
     const recv = (receivables || []) as any[]
     const pay = (payables || []) as any[]
     const tax = (taxes || []) as any[]
+    const rout = (routines || []) as any[]
 
     const totalReceivable = recv.reduce((s, r) => s + Number(r.amount || 0), 0)
     const totalPayable = pay.reduce((s, p) => s + Number(p.amount || 0), 0)
@@ -117,6 +121,11 @@ export default async function TrabajoPage() {
                         </Card>
                     </Link>
                 ))}
+            </div>
+
+            {/* Checklist Diario / Work Routines Widget */}
+            <div className="w-full mt-8">
+                <WorkRoutinesWidget routines={rout} />
             </div>
 
             {/* Próximas reuniones */}
