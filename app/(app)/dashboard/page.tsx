@@ -112,25 +112,22 @@ export default async function DashboardPage() {
             </div>
 
             {/* ═══ TODAY'S FOCUS (Hábitos / Tareas del Día) ═══ */}
-            <div className="glass-panel p-5 rounded-2xl flex flex-col sm:flex-row gap-6 relative overflow-hidden items-stretch">
-                <div className="absolute -right-10 -top-10 w-40 h-40 bg-primary/20 blur-3xl rounded-full pointer-events-none" />
-                <div className="flex-1 z-10">
-                    <div className="flex items-center gap-2 mb-2">
-                        <CalendarCheck className="h-5 w-5 text-primary" />
-                        <h3 className="text-lg font-bold">Focus del Día</h3>
-                    </div>
-                    <p className="text-muted-foreground text-sm mb-4">
-                        Tus hábitos pendientes para mantener la racha.
-                    </p>
-                    <div className="flex gap-2">
-                        <Link href="/salud/habitos">
-                            <Button size="sm" className="bg-primary/90 hover:bg-primary shadow-[0_0_15px_rgba(19,127,236,0.3)] text-white rounded-xl">
-                                Ver Hábitos
-                            </Button>
-                        </Link>
+            <div className="glass-panel p-5 sm:p-6 rounded-3xl flex flex-col gap-6 relative overflow-hidden">
+                <div className="absolute -right-10 -top-10 w-40 h-40 bg-primary/20 blur-[80px] rounded-full pointer-events-none" />
+
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 z-10 w-full">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <CalendarCheck className="h-6 w-6 text-primary" />
+                            <h3 className="text-xl font-bold">Focus del Día</h3>
+                        </div>
+                        <p className="text-muted-foreground text-sm">
+                            Tus hábitos pendientes para mantener la racha semanal.
+                        </p>
                     </div>
                 </div>
-                <div className="w-full sm:w-64 z-10 flex flex-col justify-center">
+
+                <div className="w-full z-10">
                     <HabitWidget habits={habits} />
                 </div>
             </div>

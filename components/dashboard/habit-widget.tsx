@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -103,53 +102,48 @@ export function HabitWidget({ habits }: HabitWidgetProps) {
     const displayHabits = habits.slice(0, 5)
 
     return (
-        <Card className="glass lg:col-span-3 flex flex-col h-full bg-card/40 border-primary/10">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                <div>
-                    <CardTitle className="flex items-center gap-2">
-                        Cuadro de hábitos
-                    </CardTitle>
-                    <CardDescription>Seguimiento semanal</CardDescription>
-                </div>
-                <Link href="/salud/habitos">
-                    <Button variant="secondary" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 h-8 text-xs px-3 rounded-full">
-                        Agregar
-                    </Button>
-                </Link>
-            </CardHeader>
-            <CardContent className="flex flex-col flex-1 pb-6 w-full overflow-hidden">
-                <div className="flex items-center justify-between mb-6 px-1 lg:pl-[120px] max-w-full">
-                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-muted/50 hover:bg-muted" onClick={() => setWeekOffset(prev => prev - 1)}>
+        <div className="flex flex-col w-full h-full">
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-5 gap-4">
+                <div className="flex items-center justify-between w-full sm:w-auto bg-background/60 backdrop-blur-md rounded-2xl p-1.5 px-3 border border-border/60 shadow-sm">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl hover:bg-muted" onClick={() => setWeekOffset(prev => prev - 1)}>
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <span className="text-sm font-semibold text-primary">{weekLabel}</span>
-                    <Button variant="ghost" size="icon" className="h-7 w-7 rounded-full bg-muted/50 hover:bg-muted" onClick={() => setWeekOffset(prev => prev + 1)}>
+                    <span className="text-sm font-semibold text-primary px-4 hidden sm:inline-block">{weekLabel}</span>
+                    <span className="text-sm font-semibold text-primary px-4 sm:hidden">{weekLabel.substring(0, 15)}</span>
+                    <Button variant="ghost" size="icon" className="h-8 w-8 rounded-xl hover:bg-muted" onClick={() => setWeekOffset(prev => prev + 1)}>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
+                <Link href="/salud/habitos">
+                    <Button variant="outline" size="sm" className="bg-primary/5 text-primary hover:bg-primary/10 h-10 px-5 rounded-2xl border-primary/20 font-bold w-full sm:w-auto transition-colors">
+                        Administrar Hábitos
+                    </Button>
+                </Link>
+            </div>
+            <div className="flex flex-col flex-1 pb-2 w-full overflow-hidden">
 
                 {habits.length === 0 ? (
-                    <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm flex-col gap-2 opacity-60 h-[200px]">
-                        Aún no tienes hábitos registrados.
+                    <div className="flex-1 flex items-center justify-center text-muted-foreground text-sm flex-col gap-3 h-[200px] border border-dashed border-border/60 rounded-3xl bg-muted/20">
+                        <p>Aún no tienes hábitos registrados.</p>
                         <Link href="/salud/habitos">
-                            <Button variant="link" className="text-primary text-xs h-auto p-0">Crear uno ahora</Button>
+                            <Button className="bg-primary/90 text-white hover:bg-primary rounded-xl transition-all shadow-md" size="sm">Cargar Primer Hábito</Button>
                         </Link>
                     </div>
                 ) : (
-                    <div className="flex-1 w-full overflow-x-auto select-none">
-                        <div className="min-w-[340px] flex flex-col h-full">
+                    <div className="w-full overflow-x-auto select-none rounded-3xl border border-border/50 bg-background/50 backdrop-blur-md p-4 sm:p-6 shadow-sm">
+                        <div className="min-w-[420px] flex flex-col w-full h-full">
                             {/* Días Header */}
-                            <div className="flex items-center mb-4 text-[10px] text-muted-foreground font-medium w-full">
-                                <div className="w-24 sm:w-[120px] shrink-0" /> {/* Espacio para el nombre del hábito */}
+                            <div className="flex items-center mb-6 w-full border-b border-border/60 pb-4">
+                                <div className="w-28 sm:w-[160px] shrink-0" />
                                 <div className="flex justify-between flex-1 gap-1">
                                     {weekDates.map((date, idx) => {
                                         const isToday = formatDateStr(date) === formatDateStr(new Date())
                                         return (
                                             <div key={idx} className="flex flex-col items-center flex-1">
-                                                <span className="mb-1 leading-none text-[11px] opacity-70">
+                                                <span className={`mb-1 text-[15px] font-semibold tracking-tight ${isToday ? 'text-primary' : 'text-foreground/80'}`}>
                                                     {String(date.getDate()).padStart(2, '0')}
                                                 </span>
-                                                <span className={`uppercase font-bold ${isToday ? 'text-primary' : ''}`}>
+                                                <span className={`uppercase text-[10px] font-black tracking-widest ${isToday ? 'bg-primary/10 text-primary px-2 py-0.5 rounded-full' : 'text-muted-foreground'}`}>
                                                     {dayHeaders[idx]}
                                                 </span>
                                             </div>
@@ -159,10 +153,10 @@ export function HabitWidget({ habits }: HabitWidgetProps) {
                             </div>
 
                             {/* Hábitos Rows */}
-                            <div className={`space-y-4 flex-1 transition-opacity ${loading ? 'opacity-50' : 'opacity-100'}`}>
+                            <div className={`space-y-4 sm:space-y-5 flex-1 transition-opacity ${loading ? 'opacity-50' : 'opacity-100'}`}>
                                 {displayHabits.map(habit => (
-                                    <div key={habit.id} className="flex items-center w-full">
-                                        <div className="w-24 sm:w-[120px] shrink-0 text-sm font-semibold pr-2 truncate">
+                                    <div key={habit.id} className="flex items-center w-full group">
+                                        <div className="w-28 sm:w-[160px] shrink-0 text-[13px] sm:text-sm font-semibold pr-2 truncate text-foreground/80 group-hover:text-primary transition-colors cursor-default">
                                             {habit.name}
                                         </div>
                                         <div className="flex justify-between flex-1 gap-1">
@@ -173,13 +167,13 @@ export function HabitWidget({ habits }: HabitWidgetProps) {
                                                     <div key={idx} className="flex justify-center flex-1">
                                                         <button
                                                             onClick={() => handleToggle(habit.id, dateStr)}
-                                                            className={`h-7 w-7 rounded-full flex items-center justify-center border-2 transition-all 
+                                                            className={`h-9 w-9 sm:h-11 sm:w-11 rounded-2xl flex items-center justify-center border-2 transition-all duration-300
                                                                 ${completed
-                                                                    ? 'bg-rose-500 border-rose-500 text-white shadow-md shadow-rose-500/20 scale-110'
-                                                                    : 'border-muted-foreground/20 hover:border-rose-500/50 hover:bg-rose-500/5 text-transparent'
+                                                                    ? 'bg-rose-500 border-rose-500 text-white shadow-lg shadow-rose-500/30 scale-105'
+                                                                    : 'border-border/60 hover:border-primary/50 hover:bg-primary/5 text-transparent'
                                                                 }`}
                                                         >
-                                                            <Check className="h-4 w-4" strokeWidth={3} />
+                                                            <Check className="h-5 w-5" strokeWidth={3} />
                                                         </button>
                                                     </div>
                                                 )
@@ -190,10 +184,10 @@ export function HabitWidget({ habits }: HabitWidgetProps) {
                             </div>
 
                             {habits.length > 5 && (
-                                <div className="mt-4 text-center">
+                                <div className="mt-6 text-center border-t border-border/50 pt-4">
                                     <Link href="/salud/habitos">
-                                        <span className="text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-                                            + {habits.length - 5} hábitos más...
+                                        <span className="text-sm text-primary font-bold hover:underline transition-colors cursor-pointer">
+                                            Ver {habits.length - 5} hábitos más
                                         </span>
                                     </Link>
                                 </div>
@@ -201,7 +195,7 @@ export function HabitWidget({ habits }: HabitWidgetProps) {
                         </div>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     )
 }
