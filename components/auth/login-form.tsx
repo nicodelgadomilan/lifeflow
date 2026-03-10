@@ -21,6 +21,9 @@ export function LoginForm() {
         e.preventDefault()
         setIsLoading(true)
 
+        // Debugging env variable (will appear in browser console)
+        console.log('Supabase URL detectada en el cliente:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Configurada' : 'Faltante')
+
         try {
             const { error } = await supabase.auth.signInWithPassword({
                 email,
