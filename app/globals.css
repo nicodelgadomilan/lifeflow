@@ -109,11 +109,31 @@ body {
   scrollbar-width: none;
 }
 
-/* Glass effect utility */
+/* Enhanced Glass effect utility from Stitch Design */
 .glass {
-  background: oklch(0.13 0.02 264 / 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid oklch(0.30 0.02 264 / 0.5);
+  background: oklch(0.98 0.01 264 / 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid oklch(0 0 0 / 0.05);
+}
+
+.dark .glass {
+  background: oklch(0.13 0.03 264 / 0.4);
+  border: 1px solid oklch(1 1 1 / 0.05);
+}
+
+.glass-panel {
+  background: linear-gradient(145deg, oklch(0.98 0.01 264 / 0.8), oklch(0.95 0.02 264 / 0.4));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid oklch(1 1 1 / 0.5);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.05);
+}
+
+.dark .glass-panel {
+  background: linear-gradient(145deg, oklch(0.15 0.03 264 / 0.7), oklch(0.10 0.02 264 / 0.4));
+  border: 1px solid oklch(1 1 1 / 0.1);
+  box-shadow: 0 8px 32px oklch(0 0 0 / 0.4);
 }
 
 /* Gradient animado para hero */

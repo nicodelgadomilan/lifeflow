@@ -15,6 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Bell, LogOut, Menu, UserCircle } from 'lucide-react'
+import { ThemeToggle } from '@/components/theme-toggle'
 import { toast } from 'sonner'
 import type { User } from '@supabase/supabase-js'
 import type { Profile } from '@/types/database'
@@ -66,7 +67,9 @@ export function Header({ user, profile }: HeaderProps) {
                     {/* Aquí se podría inyectar el título de la página activa */}
                 </div>
 
-                <div className="ml-4 flex items-center gap-4 md:ml-6">
+                <div className="ml-4 flex items-center gap-2 md:gap-4 md:ml-6">
+                    <ThemeToggle />
+
                     <Button variant="ghost" size="icon" className="relative text-muted-foreground hover:text-foreground">
                         <span className="absolute top-2 right-2.5 h-2 w-2 rounded-full bg-primary" />
                         <Bell className="h-5 w-5" />

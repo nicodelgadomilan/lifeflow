@@ -97,150 +97,116 @@ export default async function DashboardPage() {
     }
 
     return (
-        <div className="space-y-6 animate-fade-in">
-
-            {/* HEADER con saludo */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-6 sm:space-y-8 animate-fade-in max-w-4xl mx-auto pb-12">
+            {/* HEADER con saludo tipo App */}
+            <div className="flex items-center gap-4 flex-1">
+                <div className="flex items-center justify-center rounded-full size-12 shadow-md bg-gradient-to-br from-primary to-indigo-600 text-white font-bold text-xl">
+                    {userName.substring(0, 1).toUpperCase()}
+                </div>
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Hola, {userName} 👋</h1>
-                    <p className="text-muted-foreground mt-1">
+                    <h2 className="text-2xl font-bold leading-tight tracking-[-0.015em]">Hola, {userName}</h2>
+                    <p className="text-muted-foreground text-sm flex items-center gap-1">
                         {today.toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}
                     </p>
                 </div>
             </div>
 
-            {/* ═══ HÁBITOS — PRIMERA SECCIÓN (lo más importante) ═══ */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7 border border-rose-500/20 rounded-2xl p-6 md:p-8 relative overflow-hidden bg-gradient-to-br from-rose-500/5 via-background to-muted/10">
-                {/* Orb decorativo */}
-                <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full blur-3xl opacity-10 bg-rose-500 pointer-events-none" />
-
-                <div className="lg:col-span-4 flex flex-col justify-center gap-4 z-10 relative">
-                    <div className="flex items-center gap-2 text-rose-500 font-semibold text-sm">
-                        <CalendarCheck className="h-4 w-4" />
-                        Hábitos Diarios
+            {/* ═══ TODAY'S FOCUS (Hábitos / Tareas del Día) ═══ */}
+            <div className="glass-panel p-5 rounded-2xl flex flex-col sm:flex-row gap-6 relative overflow-hidden items-stretch">
+                <div className="absolute -right-10 -top-10 w-40 h-40 bg-primary/20 blur-3xl rounded-full pointer-events-none" />
+                <div className="flex-1 z-10">
+                    <div className="flex items-center gap-2 mb-2">
+                        <CalendarCheck className="h-5 w-5 text-primary" />
+                        <h3 className="text-lg font-bold">Focus del Día</h3>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Desarrollá hábitos</h2>
-                    <p className="text-muted-foreground text-sm sm:text-base max-w-xl leading-relaxed">
-                        La constancia es la clave del éxito. Registrá tus hábitos diarios y construí la disciplina que te lleva a tus metas.
+                    <p className="text-muted-foreground text-sm mb-4">
+                        Tus hábitos pendientes para mantener la racha.
                     </p>
-                    <div className="flex flex-wrap gap-3 mt-2">
+                    <div className="flex gap-2">
                         <Link href="/salud/habitos">
-                            <Button variant="outline" className="border-rose-500/40 text-rose-400 hover:bg-rose-500/10 bg-background/50 backdrop-blur-sm">
-                                + Nuevo Hábito
-                            </Button>
-                        </Link>
-                        <Link href="/metas">
-                            <Button variant="outline" className="border-border/60 hover:bg-muted bg-background/50 backdrop-blur-sm">
-                                Ver Metas
+                            <Button size="sm" className="bg-primary/90 hover:bg-primary shadow-[0_0_15px_rgba(19,127,236,0.3)] text-white rounded-xl">
+                                Ver Hábitos
                             </Button>
                         </Link>
                     </div>
                 </div>
-                <div className="lg:col-span-3 z-10 relative mt-6 lg:mt-0">
+                <div className="w-full sm:w-64 z-10 flex flex-col justify-center">
                     <HabitWidget habits={habits} />
                 </div>
             </div>
 
-            {/* ═══ BOTONES DE ACCIÓN RÁPIDA ═══ */}
-            <div className="glass rounded-2xl border border-border/40 p-4 sm:p-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">⚡ Acciones Rápidas</p>
-                <div className="flex gap-3 overflow-x-auto pb-2 flex-nowrap sm:flex-wrap sm:pb-0 hide-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
+            {/* ═══ BOTONES DE ACCIÓN RÁPIDA (Optimizados para Mobile) ═══ */}
+            <div>
+                <h3 className="text-lg font-bold px-1 mb-3">Acciones Rápidas</h3>
+                <div className="grid grid-cols-3 gap-3">
                     <TransactionFormDialog
                         defaultType="income"
                         trigger={
-                            <button className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-400 font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95">
-                                <ArrowUpRight className="h-4 w-4" />
-                                + Ingreso
+                            <button className="glass p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-emerald-500/10 transition-colors border outline-none border-transparent hover:border-emerald-500/30 w-full group">
+                                <div className="size-10 rounded-full bg-emerald-500/10 group-hover:bg-emerald-500/20 text-emerald-500 flex items-center justify-center transition-colors">
+                                    <ArrowUpRight className="h-5 w-5" />
+                                </div>
+                                <span className="text-xs font-medium text-foreground">Ingreso</span>
                             </button>
                         }
                     />
                     <TransactionFormDialog
                         defaultType="expense"
                         trigger={
-                            <button className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-destructive/20 hover:bg-destructive/30 border border-destructive/40 text-rose-400 font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95">
-                                <ArrowDownRight className="h-4 w-4" />
-                                − Egreso
+                            <button className="glass p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:bg-rose-500/10 transition-colors border outline-none border-transparent hover:border-rose-500/30 w-full group">
+                                <div className="size-10 rounded-full bg-rose-500/10 group-hover:bg-rose-500/20 text-rose-500 flex items-center justify-center transition-colors">
+                                    <ArrowDownRight className="h-5 w-5" />
+                                </div>
+                                <span className="text-xs font-medium text-foreground">Egreso</span>
                             </button>
                         }
                     />
-                    <Link href="/finanzas" className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-semibold text-sm transition-all hover:scale-[1.02]">
-                        <BarChart3 className="h-4 w-4" />
-                        Finanzas
-                    </Link>
-                    <Link href="/trabajo" className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 font-semibold text-sm transition-all hover:scale-[1.02]">
-                        💼 Trabajo
-                    </Link>
-                    <Link href="/organizacion/tareas" className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-400 font-semibold text-sm transition-all hover:scale-[1.02]">
-                        <CheckSquare className="h-4 w-4" />
-                        Tareas
+                    <Link href="/organizacion/tareas" className="block outline-none w-full">
+                        <button className="w-full bg-primary/90 hover:bg-primary p-4 rounded-2xl flex flex-col items-center justify-center gap-2 transition-colors shadow-[0_0_15px_rgba(19,127,236,0.3)] border-transparent group">
+                            <div className="size-10 rounded-full bg-white/20 text-white flex items-center justify-center transition-all group-hover:scale-110">
+                                <CheckSquare className="h-5 w-5" />
+                            </div>
+                            <span className="text-xs font-bold text-white">Nueva Tarea</span>
+                        </button>
                     </Link>
                 </div>
             </div>
 
-            {/* Top Metrics Cards */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card className={`glass card-hover ${isBalancePositive ? 'border-emerald-500/20' : 'border-destructive/20'}`}>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Balance Total</CardTitle>
-                        <div className={`p-2 rounded-full ${isBalancePositive ? 'bg-emerald-500/10' : 'bg-destructive/10'}`}>
-                            <Wallet className={`h-4 w-4 ${isBalancePositive ? 'text-emerald-500' : 'text-destructive'}`} />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className={`text-2xl font-bold ${isBalancePositive ? 'text-emerald-500' : 'text-destructive'}`}>
-                            {formatCurrency(balance)}
-                        </div>
-                        <p className={`text-xs flex items-center mt-1 font-medium ${isBalancePositive ? 'text-emerald-500' : 'text-destructive'}`}>
-                            {isBalancePositive ? <TrendingUp className="mr-1 h-3 w-3" /> : <TrendingDown className="mr-1 h-3 w-3" />}
-                            {formatCurrency(totalIncome)} ingresos
-                        </p>
-                    </CardContent>
-                </Card>
+            {/* ═══ QUICK STATS (Scrolleable Horizontal para Mobile) ═══ */}
+            <div>
+                <h3 className="text-lg font-bold px-1 mb-3">Estadísticas Rápidas</h3>
+                <div className="flex overflow-x-auto gap-3 pb-4 px-1 snap-x scrollbar-hide -mx-1">
 
-                <Card className="glass card-hover border-destructive/20">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Gastos Acumulados</CardTitle>
-                        <div className="p-2 bg-destructive/10 rounded-full">
-                            <TrendingDown className="h-4 w-4 text-destructive" />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-destructive">{formatCurrency(totalExpense)}</div>
-                        <p className="text-xs text-muted-foreground mt-1 font-medium">En transacciones procesadas</p>
-                    </CardContent>
-                </Card>
+                    <div className="glass min-w-[150px] p-4 rounded-2xl snap-start flex flex-col gap-2 relative overflow-hidden group hover:border-emerald-500/30 transition-colors">
+                        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Wallet className="h-5 w-5 text-emerald-500 mb-1" />
+                        <p className="text-muted-foreground text-xs font-medium">Balance</p>
+                        <p className="text-xl font-bold">{formatCurrency(balance)}</p>
+                    </div>
 
-                <Card className="glass card-hover">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Próximos Pagos</CardTitle>
-                        <div className="p-2 bg-amber-500/10 rounded-full">
-                            <CalendarClock className="h-4 w-4 text-amber-500" />
-                        </div>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold text-amber-500">{subs.length}</div>
-                        <p className="text-xs text-muted-foreground mt-1">Suscripciones detectadas</p>
-                    </CardContent>
-                </Card>
+                    <div className="glass min-w-[150px] p-4 rounded-2xl snap-start flex flex-col gap-2 relative overflow-hidden group hover:border-rose-500/30 transition-colors">
+                        <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <TrendingDown className="h-5 w-5 text-rose-500 mb-1" />
+                        <p className="text-muted-foreground text-xs font-medium">Gastos Mes</p>
+                        <p className="text-xl font-bold">{formatCurrency(totalExpense)}</p>
+                    </div>
 
-                <Link href="/organizacion/tareas" className="block">
-                    <Card className={`glass card-hover h-full ${pendingTasksCount > 0 ? 'border-blue-500/20' : 'border-emerald-500/20'}`}>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">Tareas Pendientes</CardTitle>
-                            <div className={`p-2 rounded-full ${pendingTasksCount > 0 ? 'bg-blue-500/10' : 'bg-emerald-500/10'}`}>
-                                <CheckSquare className={`h-4 w-4 ${pendingTasksCount > 0 ? 'text-blue-500' : 'text-emerald-500'}`} />
-                            </div>
-                        </CardHeader>
-                        <CardContent>
-                            <div className={`text-2xl font-bold ${pendingTasksCount > 0 ? 'text-blue-500' : 'text-emerald-500'}`}>
-                                {pendingTasksCount}
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-1">
-                                {pendingTasksCount === 0 ? '¡Todo al día! 🎉' : 'tareas sin completar'}
-                            </p>
-                        </CardContent>
-                    </Card>
-                </Link>
+                    <div className="glass min-w-[150px] p-4 rounded-2xl snap-start flex flex-col gap-2 relative overflow-hidden group hover:border-amber-500/30 transition-colors">
+                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <CalendarClock className="h-5 w-5 text-amber-500 mb-1" />
+                        <p className="text-muted-foreground text-xs font-medium">Suscripciones</p>
+                        <p className="text-xl font-bold">{subs.length} activas</p>
+                    </div>
+
+                    <Link href="/organizacion/tareas" className="block min-w-[150px] snap-start outline-none">
+                        <div className="glass p-4 rounded-2xl flex flex-col gap-2 relative overflow-hidden group hover:border-blue-500/30 transition-colors h-full">
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <CheckSquare className="h-5 w-5 text-blue-500 mb-1" />
+                            <p className="text-muted-foreground text-xs font-medium">Tareas</p>
+                            <p className="text-xl font-bold">{pendingTasksCount} pend.</p>
+                        </div>
+                    </Link>
+                </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
