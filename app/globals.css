@@ -4,46 +4,46 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.98 0.005 264);
-  --foreground: oklch(0.15 0.02 264);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 264);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0.02 264);
-  --primary: oklch(0.55 0.22 264);
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.94 0.01 264);
-  --secondary-foreground: oklch(0.25 0.02 264);
-  --muted: oklch(0.94 0.01 264);
-  --muted-foreground: oklch(0.55 0.02 264);
-  --accent: oklch(0.94 0.01 264);
-  --accent-foreground: oklch(0.25 0.02 264);
-  --destructive: oklch(0.60 0.22 25);
-  --border: oklch(0.90 0.01 264);
-  --input: oklch(0.90 0.01 264);
-  --ring: oklch(0.55 0.22 264);
+  --background: hsl(240, 50%, 98%);
+  --foreground: hsl(240, 20%, 15%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(240, 20%, 15%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(240, 20%, 15%);
+  --primary: hsl(240, 100%, 65%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(240, 10%, 94%);
+  --secondary-foreground: hsl(240, 20%, 25%);
+  --muted: hsl(240, 10%, 94%);
+  --muted-foreground: hsl(240, 10%, 55%);
+  --accent: hsl(240, 10%, 94%);
+  --accent-foreground: hsl(240, 20%, 25%);
+  --destructive: hsl(0, 84%, 60%);
+  --border: hsl(240, 10%, 90%);
+  --input: hsl(240, 10%, 90%);
+  --ring: hsl(240, 100%, 65%);
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: oklch(0.10 0.015 264);
-  --foreground: oklch(0.95 0.01 264);
-  --card: oklch(0.13 0.02 264);
-  --card-foreground: oklch(0.95 0.01 264);
-  --popover: oklch(0.13 0.02 264);
-  --popover-foreground: oklch(0.95 0.01 264);
-  --primary: oklch(0.65 0.22 264);
-  --primary-foreground: oklch(0.10 0 0);
-  --secondary: oklch(0.18 0.02 264);
-  --secondary-foreground: oklch(0.95 0.01 264);
-  --muted: oklch(0.18 0.02 264);
-  --muted-foreground: oklch(0.60 0.02 264);
-  --accent: oklch(0.18 0.02 264);
-  --accent-foreground: oklch(0.95 0.01 264);
-  --destructive: oklch(0.65 0.22 25);
-  --border: oklch(0.22 0.02 264);
-  --input: oklch(0.18 0.02 264);
-  --ring: oklch(0.65 0.22 264);
+  --background: hsl(240, 20%, 10%);
+  --foreground: hsl(240, 10%, 95%);
+  --card: hsl(240, 20%, 13%);
+  --card-foreground: hsl(240, 10%, 95%);
+  --popover: hsl(240, 20%, 13%);
+  --popover-foreground: hsl(240, 10%, 95%);
+  --primary: hsl(240, 100%, 75%);
+  --primary-foreground: hsl(0, 0%, 10%);
+  --secondary: hsl(240, 20%, 18%);
+  --secondary-foreground: hsl(240, 10%, 95%);
+  --muted: hsl(240, 20%, 18%);
+  --muted-foreground: hsl(240, 10%, 60%);
+  --accent: hsl(240, 20%, 18%);
+  --accent-foreground: hsl(240, 10%, 95%);
+  --destructive: hsl(0, 84%, 65%);
+  --border: hsl(240, 20%, 22%);
+  --input: hsl(240, 20%, 18%);
+  --ring: hsl(240, 100%, 75%);
 }
 
 @theme inline {
@@ -92,12 +92,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: oklch(0.30 0.02 264);
+  background: hsl(240, 20%, 30%);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.45 0.05 264);
+  background: hsl(240, 20%, 45%);
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -138,7 +138,7 @@ body {
 
 /* Gradient animado para hero */
 .gradient-text {
-  background: linear-gradient(135deg, oklch(0.70 0.22 264), oklch(0.65 0.22 200), oklch(0.70 0.22 310));
+  background: linear-gradient(135deg, hsl(264, 80%, 65%), hsl(200, 80%, 65%), hsl(310, 80%, 65%));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
