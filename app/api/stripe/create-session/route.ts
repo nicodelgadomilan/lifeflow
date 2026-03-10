@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
                 metadata: { supabase_user_id: user.id }
             })
             customerId = customer.id
-            await supabase.from('profiles').update({ stripe_customer_id: customerId } as any).eq('id', user.id)
+            await (supabase as any).from('profiles').update({ stripe_customer_id: customerId }).eq('id', user.id)
         }
 
         const session = await stripe.checkout.sessions.create({

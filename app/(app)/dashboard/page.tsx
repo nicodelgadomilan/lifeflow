@@ -142,13 +142,13 @@ export default async function DashboardPage() {
             </div>
 
             {/* ═══ BOTONES DE ACCIÓN RÁPIDA ═══ */}
-            <div className="glass rounded-2xl border border-border/40 p-5">
+            <div className="glass rounded-2xl border border-border/40 p-4 sm:p-5">
                 <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-4">⚡ Acciones Rápidas</p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex gap-3 overflow-x-auto pb-2 flex-nowrap sm:flex-wrap sm:pb-0 hide-scrollbar -mx-2 px-2 sm:mx-0 sm:px-0">
                     <TransactionFormDialog
                         defaultType="income"
                         trigger={
-                            <button className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-400 font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95">
+                            <button className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-400 font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95">
                                 <ArrowUpRight className="h-4 w-4" />
                                 + Ingreso
                             </button>
@@ -157,20 +157,20 @@ export default async function DashboardPage() {
                     <TransactionFormDialog
                         defaultType="expense"
                         trigger={
-                            <button className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-destructive/20 hover:bg-destructive/30 border border-destructive/40 text-rose-400 font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95">
+                            <button className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-destructive/20 hover:bg-destructive/30 border border-destructive/40 text-rose-400 font-semibold text-sm transition-all hover:scale-[1.02] active:scale-95">
                                 <ArrowDownRight className="h-4 w-4" />
                                 − Egreso
                             </button>
                         }
                     />
-                    <Link href="/finanzas" className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-semibold text-sm transition-all hover:scale-[1.02]">
+                    <Link href="/finanzas" className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-semibold text-sm transition-all hover:scale-[1.02]">
                         <BarChart3 className="h-4 w-4" />
                         Finanzas
                     </Link>
-                    <Link href="/trabajo" className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 font-semibold text-sm transition-all hover:scale-[1.02]">
+                    <Link href="/trabajo" className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-400 font-semibold text-sm transition-all hover:scale-[1.02]">
                         💼 Trabajo
                     </Link>
-                    <Link href="/organizacion/tareas" className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-400 font-semibold text-sm transition-all hover:scale-[1.02]">
+                    <Link href="/organizacion/tareas" className="flex-shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 text-blue-400 font-semibold text-sm transition-all hover:scale-[1.02]">
                         <CheckSquare className="h-4 w-4" />
                         Tareas
                     </Link>

@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { MobileSidebar } from '@/components/layout/sidebar'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import {
@@ -25,6 +27,7 @@ interface HeaderProps {
 export function Header({ user, profile }: HeaderProps) {
     const router = useRouter()
     const supabase = createClient()
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
     const handleSignOut = async () => {
         try {
@@ -52,7 +55,7 @@ export function Header({ user, profile }: HeaderProps) {
 
                 {/* Mobile menu button */}
                 <div className="flex items-center md:hidden">
-                    <Button variant="ghost" size="icon" className="text-muted-foreground mr-2">
+                    <Button variant="ghost" size="icon" className="text-muted-foreground mr-2" onClick={() => setMobileMenuOpen(true)}>
                         <Menu className="h-6 w-6" />
                     </Button>
                     <span className="font-bold text-lg">LifeHub</span>
@@ -100,6 +103,7 @@ export function Header({ user, profile }: HeaderProps) {
                     </DropdownMenu>
                 </div>
             </div>
+            <MobileSidebar open={mobileMenuOpen} onOpenChange={setMobileMenuOpen} />
         </header>
     )
 }

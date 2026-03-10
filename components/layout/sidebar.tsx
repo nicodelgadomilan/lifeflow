@@ -17,6 +17,7 @@ import {
     Settings
 } from 'lucide-react'
 import { useState } from 'react'
+import { Sheet, SheetContent } from '@/components/ui/sheet'
 
 const mainNavigation = [
     { name: 'Documentos', href: '/documentos', icon: Files },
@@ -72,6 +73,24 @@ const trabajoLinks = [
 ]
 
 export function Sidebar() {
+    return (
+        <div className="hidden md:flex md:w-64 md:flex-col glass border-r border-border/50">
+            <SidebarInner />
+        </div>
+    )
+}
+
+export function MobileSidebar({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+    return (
+        <Sheet open={open} onOpenChange={onOpenChange}>
+            <SheetContent side="left" className="p-0 w-[280px] glass border-r-0" showCloseButton={false}>
+                <SidebarInner onNavigate={() => onOpenChange(false)} />
+            </SheetContent>
+        </Sheet>
+    )
+}
+
+function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname()
     // Finanzas State
     const isFinanceActive = pathname.startsWith('/finanzas')
@@ -98,7 +117,11 @@ export function Sidebar() {
     const [isTrabajoOpen, setIsTrabajoOpen] = useState(isTrabajoActive)
 
     return (
-        <div className="hidden md:flex md:w-64 md:flex-col glass border-r border-border/50">
+        <div className="flex h-full flex-col" onClick={(e) => {
+            if ((e.target as Element).closest('a')) {
+                onNavigate?.()
+            }
+        }}>
             <div className="flex h-16 flex-shrink-0 items-center px-6 border-b border-border/50">
                 <div className="flex items-center gap-2">
                     <div className="bg-primary/20 p-1.5 rounded-lg">

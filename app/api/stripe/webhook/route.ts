@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (event.type === 'checkout.session.completed') {
-        const session = event.data.object as Stripe.CheckoutSession
+        const session = event.data.object as Stripe.Checkout.Session
         const userId = session.metadata?.user_id
         if (!userId) return NextResponse.json({ received: true })
 
@@ -40,12 +40,12 @@ export async function POST(req: NextRequest) {
         const now = new Date()
         const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000)
 
-        await supabaseAdmin.from('profiles').update({
+        await (supabaseAdmin as any).from('profiles').update({
             plan: 'pro',
             plan_expires_at: expiresAt.toISOString(),
             plan_payment_method: 'stripe',
             updated_at: now.toISOString(),
-        } as any).eq('id', userId)
+        }).eq('id', userId)
 
         await (supabaseAdmin as any).from('subscription_payments').insert({
             user_id: userId,

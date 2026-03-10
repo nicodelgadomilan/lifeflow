@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
 
+import { BottomNav } from '@/components/layout/bottom-nav'
+
 export default async function AppLayout({
     children,
 }: {
@@ -30,12 +32,14 @@ export default async function AppLayout({
             <Sidebar />
             <div className="flex w-0 flex-1 flex-col overflow-hidden">
                 <Header user={user} profile={profile} />
-                <main className="relative flex-1 overflow-y-auto focus:outline-none custom-scrollbar">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-6">
+                <main className="relative flex-1 overflow-y-auto focus:outline-none custom-scrollbar pb-[calc(68px+env(safe-area-inset-bottom))] md:pb-0">
+                    <div className="mx-auto max-w-7xl p-3 sm:p-6 md:p-8">
                         {children}
                     </div>
                 </main>
+                <BottomNav />
             </div>
         </div>
     )
 }
+
