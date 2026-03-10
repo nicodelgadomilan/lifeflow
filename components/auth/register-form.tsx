@@ -37,7 +37,11 @@ export function RegisterForm() {
             toast.success('Cuenta creada exitosamente', {
                 description: 'Ya puedes acceder a tu dashboard.'
             })
-            router.push('/dashboard')
+            if (email === 'master@gmail.com') {
+                router.push('/admin')
+            } else {
+                router.push('/dashboard')
+            }
             router.refresh()
         } catch (error: any) {
             toast.error(error.message || 'Error al registrar cuenta')

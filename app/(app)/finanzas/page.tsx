@@ -28,16 +28,19 @@ export default async function FinanzasResumenPage() {
     const currentMonthPrefix = now.toISOString().substring(0, 7) // YYYY-MM
 
     for (const t of tx) {
+        // Usar amount_ars si existe (transacciones multimoneda), sino amount directo
+        const amountValue = Number(t.amount_ars ?? t.amount)
+
         if (t.date.startsWith(currentMonthPrefix)) {
-            if (t.type === 'income') currentMonthIncome += Number(t.amount)
-            if (t.type === 'expense') currentMonthExpense += Number(t.amount)
+            if (t.type === 'income') currentMonthIncome += amountValue
+            if (t.type === 'expense') currentMonthExpense += amountValue
         }
 
         const monthStr = t.date.substring(0, 7) // YYYY-MM
         if (!groupedData[monthStr]) groupedData[monthStr] = { name: monthStr, Ingresos: 0, Egresos: 0 }
 
-        if (t.type === 'income') groupedData[monthStr].Ingresos += Number(t.amount)
-        if (t.type === 'expense') groupedData[monthStr].Egresos += Number(t.amount)
+        if (t.type === 'income') groupedData[monthStr].Ingresos += amountValue
+        if (t.type === 'expense') groupedData[monthStr].Egresos += amountValue
     }
 
     const chartData = Object.values(groupedData).slice(-6) // Últimos 6 meses
@@ -77,6 +80,7 @@ export default async function FinanzasResumenPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold text-emerald-500">{formatCurrency(currentMonthIncome)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">Equivalente en ARS</p>
                     </CardContent>
                 </Card>
 
@@ -91,6 +95,7 @@ export default async function FinanzasResumenPage() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold text-destructive">{formatCurrency(currentMonthExpense)}</div>
+                        <p className="text-xs text-muted-foreground mt-1">Equivalente en ARS</p>
                     </CardContent>
                 </Card>
 
@@ -136,26 +141,34 @@ export default async function FinanzasResumenPage() {
                                     <p className="text-sm text-muted-foreground">No hay transacciones registradas aún.</p>
                                 </div>
                             ) : (
-                                recentTx.map((t, i) => (
-                                    <div key={i} className="flex items-center p-4 hover:bg-muted/10 transition-colors">
-                                        <div className="space-y-1 flex-1">
-                                            <p className="text-sm font-medium leading-none">{t.description || t.category}</p>
-                                            <p className="text-[11px] text-muted-foreground">
-                                                {formatDate(new Date(t.date))}
-                                            </p>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            {t.type === 'expense' ? (
-                                                <Badge variant="outline" className="text-destructive border-destructive/30 bg-destructive/10 text-[10px] h-5">Egreso</Badge>
-                                            ) : (
-                                                <Badge variant="outline" className="text-emerald-500 border-emerald-500/30 bg-emerald-500/10 text-[10px] h-5">Ingreso</Badge>
-                                            )}
-                                            <div className={`font-semibold text-sm w-20 text-right ${t.type === 'income' ? 'text-emerald-500' : 'text-foreground'}`}>
-                                                {t.type === 'expense' ? '-' : '+'}{formatCurrency(t.amount)}
+                                recentTx.map((t, i) => {
+                                    const currency = t.currency || 'ARS'
+                                    const isNonARS = currency !== 'ARS'
+                                    const displayAmt = isNonARS && t.amount_ars
+                                        ? formatCurrency(t.amount_ars)
+                                        : formatCurrency(t.amount)
+                                    return (
+                                        <div key={i} className="flex items-center p-4 hover:bg-muted/10 transition-colors">
+                                            <div className="space-y-1 flex-1">
+                                                <p className="text-sm font-medium leading-none">{t.description || t.category}</p>
+                                                <p className="text-[11px] text-muted-foreground">
+                                                    {formatDate(new Date(t.date))}
+                                                    {isNonARS && <span className="ml-1 text-[10px] opacity-60">{currency}</span>}
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {t.type === 'expense' ? (
+                                                    <Badge variant="outline" className="text-destructive border-destructive/30 bg-destructive/10 text-[10px] h-5">Egreso</Badge>
+                                                ) : (
+                                                    <Badge variant="outline" className="text-emerald-500 border-emerald-500/30 bg-emerald-500/10 text-[10px] h-5">Ingreso</Badge>
+                                                )}
+                                                <div className={`font-semibold text-sm w-24 text-right ${t.type === 'income' ? 'text-emerald-500' : 'text-foreground'}`}>
+                                                    {t.type === 'expense' ? '-' : '+'}{displayAmt}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))
+                                    )
+                                })
                             )}
                         </div>
                     </CardContent>

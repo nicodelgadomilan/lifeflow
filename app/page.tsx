@@ -20,7 +20,7 @@ export const metadata = {
 
 export default async function LandingPage() {
   const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const { data: { user } } = await supabase.auth.getUser()
 
   const modules = [
     {
@@ -115,7 +115,7 @@ export default async function LandingPage() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            {session ? (
+            {user ? (
               <Link href="/dashboard">
                 <Button className="rounded-full shadow-sm bg-primary hover:bg-primary/90 text-white font-semibold px-5 transition-all hover:scale-105 active:scale-95">
                   Mi Dashboard <ArrowRight className="ml-1.5 h-4 w-4" />
@@ -156,7 +156,7 @@ export default async function LandingPage() {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 mb-24 w-full sm:w-auto">
-          {session ? (
+          {user ? (
             <Link href="/dashboard" className="w-full sm:w-auto">
               <Button size="lg" className="rounded-full h-14 px-10 text-base font-bold w-full shadow-xl shadow-primary/25 bg-primary hover:bg-primary/90 text-white transition-all hover:scale-105">
                 Ir a mi Dashboard <ArrowRight className="ml-2 h-5 w-5" />

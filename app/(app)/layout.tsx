@@ -20,6 +20,10 @@ export default async function AppLayout({
         redirect('/login')
     }
 
+    if (user.email === 'master@gmail.com') {
+        redirect('/admin')
+    }
+
     // Obtener perfil del usuario
     const { data: profile } = await supabase
         .from('profiles')

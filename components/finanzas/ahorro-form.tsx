@@ -13,16 +13,21 @@ import { PiggyBank, Loader2, PlusCircle, Banknote, Building2, Wallet } from 'luc
 import { addSavingsGoal } from '@/app/(app)/actions/ahorros'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { CURRENCY_LABELS } from '@/lib/utils/formatters'
+
+const CURRENCIES = ['ARS', 'USD', 'USD_BLUE', 'EUR']
 
 export function AhorroForm() {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [locationType, setLocationType] = useState('Efectivo')
+    const [currency, setCurrency] = useState('ARS')
     const router = useRouter()
 
     async function onSubmit(formData: FormData) {
         setLoading(true)
         formData.set('location', locationType)
+        formData.set('currency', currency)
         const res = await addSavingsGoal(formData)
         setLoading(false)
 
@@ -61,13 +66,27 @@ export function AhorroForm() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="goal_amount">Meta de Ahorro ($)</Label>
+                            <Label htmlFor="goal_amount">Meta de Ahorro</Label>
                             <Input id="goal_amount" name="goal_amount" type="number" step="0.01" placeholder="Total a alcanzar" required />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="current_amount">Tengo Ahorrado ($)</Label>
+                            <Label htmlFor="current_amount">Tengo Ahorrado</Label>
                             <Input id="current_amount" name="current_amount" type="number" step="0.01" defaultValue="0" placeholder="0" />
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label>Moneda del ahorro</Label>
+                        <Select value={currency} onValueChange={(v) => v && setCurrency(v)}>
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {CURRENCIES.map(c => (
+                                    <SelectItem key={c} value={c}>{CURRENCY_LABELS[c] || c}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     {/* Location Selector */}

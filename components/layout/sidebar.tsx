@@ -14,10 +14,14 @@ import {
     Target,
     ChevronDown,
     Briefcase,
-    Settings
+    Settings,
+    LogOut
 } from 'lucide-react'
 import { useState } from 'react'
 import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 const mainNavigation = [
     { name: 'Documentos', href: '/documentos', icon: Files },
@@ -92,6 +96,9 @@ export function MobileSidebar({ open, onOpenChange }: { open: boolean; onOpenCha
 
 function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
     const pathname = usePathname()
+    const router = useRouter()
+    const supabase = createClient()
+
     // Finanzas State
     const isFinanceActive = pathname.startsWith('/finanzas')
     const [isFinanceOpen, setIsFinanceOpen] = useState(isFinanceActive)
@@ -461,8 +468,8 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
                     </div>
                 </nav>
 
-                {/* Link de Configuración al fondo */}
-                <div className="px-4 pb-4 mt-auto border-t border-border/30 pt-3">
+                {/* Link de Configuración y Salir al fondo */}
+                <div className="px-4 pb-4 mt-auto border-t border-border/30 pt-3 space-y-1">
                     <Link
                         href="/configuracion"
                         className={cn(
@@ -478,6 +485,22 @@ function SidebarInner({ onNavigate }: { onNavigate?: () => void }) {
                         )} />
                         Configuración
                     </Link>
+
+                    <button
+                        onClick={async () => {
+                            try {
+                                await supabase.auth.signOut()
+                                router.push('/login')
+                                toast.success('Sesión cerrada')
+                            } catch (e) {
+                                toast.error('Error al cerrar sesión')
+                            }
+                        }}
+                        className="w-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all"
+                    >
+                        <LogOut className="mr-3 flex-shrink-0 h-5 w-5 text-muted-foreground group-hover:text-destructive" />
+                        Cerrar sesión
+                    </button>
                 </div>
             </div>
         </div>

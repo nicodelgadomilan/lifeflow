@@ -33,7 +33,12 @@ export function LoginForm() {
             if (error) throw error
 
             toast.success('Sesión iniciada correctamente')
-            router.push('/dashboard')
+
+            if (email === 'master@gmail.com') {
+                router.push('/admin')
+            } else {
+                router.push('/dashboard')
+            }
             router.refresh()
         } catch (error: any) {
             toast.error(error.message || 'Error al iniciar sesión')

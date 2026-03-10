@@ -13,6 +13,7 @@ export async function addSubscription(formData: FormData) {
 
     const name = formData.get('name') as string
     const amount = parseFloat(formData.get('amount') as string)
+    const currency = formData.get('currency') as string || 'ARS'
     const category = formData.get('category') as string || 'Entretenimiento'
     const cycle = formData.get('cycle') as string || 'monthly'
     const next_date = formData.get('next_date') as string
@@ -27,6 +28,7 @@ export async function addSubscription(formData: FormData) {
             user_id: user.id,
             name,
             amount,
+            currency,
             category,
             cycle,
             next_date,
@@ -83,6 +85,32 @@ export async function deleteSubscription(id: string) {
     if (error) {
         return { error: 'No se pudo eliminar la suscripción' }
     }
+
+    revalidatePath('/finanzas/suscripciones')
+    revalidatePath('/dashboard')
+    return { success: true }
+}
+
+export async function updateSubscription(id: string, formData: FormData) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'No autenticado' }
+
+    const name = formData.get('name') as string
+    const amount = parseFloat(formData.get('amount') as string)
+    const currency = formData.get('currency') as string || 'ARS'
+    const category = formData.get('category') as string
+    const cycle = formData.get('cycle') as string
+    const next_date = formData.get('next_date') as string
+
+    if (!name || !amount || !next_date) return { error: 'Faltan campos obligatorios' }
+
+    const { error } = await (supabase.from('subscriptions') as any)
+        .update({ name, amount, currency, category, cycle, next_date })
+        .eq('id', id)
+        .eq('user_id', user.id)
+
+    if (error) return { error: 'Error al actualizar la suscripción' }
 
     revalidatePath('/finanzas/suscripciones')
     revalidatePath('/dashboard')

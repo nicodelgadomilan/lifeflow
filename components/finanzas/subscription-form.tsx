@@ -18,6 +18,13 @@ import { addSubscription } from '@/app/(app)/actions/suscripciones'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 
+const CURRENCIES = [
+    { value: 'ARS', label: '🇦🇷 ARS – Peso argentino' },
+    { value: 'USD', label: '🇺🇸 USD – Dólar oficial' },
+    { value: 'USD_BLUE', label: '💵 USD Blue' },
+    { value: 'EUR', label: '🇪🇺 EUR – Euro' },
+]
+
 export function SubscriptionFormDialog({ children }: { children?: React.ReactNode }) {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -47,11 +54,11 @@ export function SubscriptionFormDialog({ children }: { children?: React.ReactNod
                     </>
                 )}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] glass">
+            <DialogContent className="sm:max-w-[450px] glass">
                 <DialogHeader>
                     <DialogTitle>Añadir nueva Suscripción</DialogTitle>
                     <DialogDescription>
-                        Registra Netflix, Gym, o cualquier servicio recurrente.
+                        Registra Netflix, Gym, o cualquier servicio recurrente. Podés elegir la moneda.
                     </DialogDescription>
                 </DialogHeader>
                 <form action={onSubmit} className="space-y-4">
@@ -62,22 +69,36 @@ export function SubscriptionFormDialog({ children }: { children?: React.ReactNod
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="amount">Monto ($)</Label>
+                            <Label htmlFor="amount">Monto</Label>
                             <Input id="amount" name="amount" type="number" step="0.01" placeholder="0.00" required />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="cycle">Ciclo</Label>
-                            <Select name="cycle" defaultValue="monthly" required>
+                            <Label htmlFor="currency">Moneda</Label>
+                            <Select name="currency" defaultValue="ARS" required>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Ciclo" />
+                                    <SelectValue placeholder="Moneda" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="weekly">Semanal</SelectItem>
-                                    <SelectItem value="monthly">Mensual</SelectItem>
-                                    <SelectItem value="yearly">Anual</SelectItem>
+                                    {CURRENCIES.map(c => (
+                                        <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="cycle">Ciclo de cobro</Label>
+                        <Select name="cycle" defaultValue="monthly" required>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Ciclo" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="weekly">Semanal</SelectItem>
+                                <SelectItem value="monthly">Mensual</SelectItem>
+                                <SelectItem value="yearly">Anual</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="space-y-2">
