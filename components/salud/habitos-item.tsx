@@ -40,16 +40,16 @@ export function HabitItem({ habit, todayCompleted, todayDateStr }: HabitProps) {
     }
 
     return (
-        <Card className={`glass transition-all border-emerald-500/10 ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
+        <Card className={`bg-card shadow-sm hover:shadow-md transition-all border-border/40 ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
             <CardContent className="p-4 pl-6 flex justify-between items-center group cursor-pointer" onClick={handleToggle}>
                 <div className="flex items-center gap-4">
                     <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${checked ? 'bg-emerald-500 text-white' : 'bg-muted/30 text-emerald-500/50 group-hover:bg-emerald-500/20'}`}
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${checked ? 'bg-emerald-500 text-white shadow-sm' : 'bg-muted/50 text-emerald-600/60 dark:text-emerald-500/50 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-500/20'}`}
                     >
                         {checked ? <Check className="h-5 w-5" /> : <Leaf className="h-5 w-5" />}
                     </div>
                     <div>
-                        <h3 className={`font-semibold ${checked ? 'line-through text-muted-foreground/70' : 'text-foreground'}`}>{habit.name}</h3>
+                        <h3 className={`font-semibold ${checked ? 'line-through text-muted-foreground/50' : 'text-foreground'}`}>{habit.name}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">{timeLabels[habit.time_of_day] || 'Cualquier momento'}</p>
                     </div>
                 </div>
@@ -58,7 +58,7 @@ export function HabitItem({ habit, todayCompleted, todayDateStr }: HabitProps) {
                     <Checkbox
                         checked={checked}
                         onCheckedChange={handleToggle}
-                        className={`h-6 w-6 rounded-md ${checked ? 'data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500' : 'border-emerald-500/30'}`}
+                        className={`h-6 w-6 rounded-md transition-colors ${checked ? 'data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500 data-[state=checked]:text-white' : 'border-border/60 hover:border-emerald-500/50'}`}
                     />
                 </div>
             </CardContent>

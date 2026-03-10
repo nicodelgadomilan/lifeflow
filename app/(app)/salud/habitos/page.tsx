@@ -82,41 +82,41 @@ export default async function HabitosPage() {
 
             {/* KPIs */}
             <div className="grid gap-4 md:grid-cols-3">
-                <Card className="glass card-hover border-emerald-500/20 bg-emerald-500/5">
+                <Card className="bg-card glass-panel border-border/40 shadow-sm hover:shadow-md transition-shadow">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-emerald-500">Puntuación Diaria</CardTitle>
-                        <div className="p-2 bg-emerald-500/10 rounded-full">
-                            <Target className="h-4 w-4 text-emerald-500" />
+                        <CardTitle className="text-sm font-medium text-emerald-600 dark:text-emerald-500">Puntuación Diaria</CardTitle>
+                        <div className="p-2 bg-emerald-100/50 dark:bg-emerald-500/10 rounded-full">
+                            <Target className="h-4 w-4 text-emerald-600 dark:text-emerald-500" />
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-bold text-emerald-500">{percentage}%</div>
-                        <p className="text-xs text-emerald-500/70 mt-1">{done} de {total} rutinas completadas</p>
-                        <div className="w-full bg-muted/40 rounded-full h-1.5 mt-2">
+                        <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-500">{percentage}%</div>
+                        <p className="text-xs text-emerald-600/70 dark:text-emerald-500/70 mt-1">{done} de {total} rutinas completadas</p>
+                        <div className="w-full bg-emerald-100 dark:bg-muted/40 rounded-full h-1.5 mt-2 overflow-hidden">
                             <div className="bg-emerald-500 h-1.5 rounded-full transition-all" style={{ width: `${percentage}%` }} />
                         </div>
                     </CardContent>
                 </Card>
 
-                <Card className="glass card-hover border-orange-500/20 bg-orange-500/5">
+                <Card className="bg-card glass-panel border-border/40 shadow-sm hover:shadow-md transition-shadow">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-orange-500">Mejor Racha</CardTitle>
-                        <div className="p-2 bg-orange-500/10 rounded-full">
-                            <Flame className="h-4 w-4 text-orange-500" />
+                        <CardTitle className="text-sm font-medium text-orange-600 dark:text-orange-500">Mejor Racha</CardTitle>
+                        <div className="p-2 bg-orange-100/50 dark:bg-orange-500/10 rounded-full">
+                            <Flame className="h-4 w-4 text-orange-600 dark:text-orange-500" />
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-bold text-orange-500">
+                        <div className="text-3xl font-bold text-orange-600 dark:text-orange-500">
                             {habits.length > 0 ? Math.max(...habits.map(h => getStreak(h.id))) : 0}
                             <span className="text-lg ml-1">días</span>
                         </div>
-                        <p className="text-xs text-orange-500/70 mt-1">Racha consecutiva más larga</p>
+                        <p className="text-xs text-orange-600/70 dark:text-orange-500/70 mt-1">Racha consecutiva más larga</p>
                     </CardContent>
                 </Card>
 
-                <Card className="glass card-hover border-primary/20">
+                <Card className="bg-card glass-panel border-border/40 shadow-sm hover:shadow-md transition-shadow">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Hábitos Activos</CardTitle>
+                        <CardTitle className="text-sm font-medium text-primary">Hábitos Activos</CardTitle>
                         <div className="p-2 bg-primary/10 rounded-full">
                             <BarChart3 className="h-4 w-4 text-primary" />
                         </div>
@@ -130,10 +130,10 @@ export default async function HabitosPage() {
 
             {/* Vista semanal (7 días × N hábitos) */}
             {habits.length > 0 && (
-                <Card className="glass border-border/30 overflow-hidden">
-                    <CardHeader className="pb-3 border-b border-border/50 bg-muted/5">
-                        <CardTitle className="text-sm flex items-center gap-2">
-                            <BarChart3 className="h-4 w-4 text-primary opacity-70" />
+                <Card className="bg-card glass-panel border-border/40 shadow-sm overflow-hidden border-t-4 border-t-primary/80">
+                    <CardHeader className="pb-3 border-b border-border/30 bg-background/50">
+                        <CardTitle className="text-sm flex items-center gap-2 font-semibold">
+                            <BarChart3 className="h-4 w-4 text-primary opacity-80" />
                             Vista Semanal de Completados
                         </CardTitle>
                     </CardHeader>
@@ -163,12 +163,12 @@ export default async function HabitosPage() {
                                                 const isToday = i === 6
                                                 return (
                                                     <td key={dateStr} className="py-2 text-center">
-                                                        <div className={`w-7 h-7 rounded-full mx-auto flex items-center justify-center text-xs transition-all
+                                                        <div className={`w-7 h-7 rounded-full mx-auto flex items-center justify-center text-xs transition-all font-bold
                                                             ${isCompleted
-                                                                ? 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/50'
+                                                                ? 'bg-emerald-500 text-white shadow-sm'
                                                                 : isToday
-                                                                    ? 'border border-dashed border-primary/30 text-muted-foreground/30'
-                                                                    : 'bg-muted/20 text-muted-foreground/20'
+                                                                    ? 'border border-dashed border-primary/40 text-muted-foreground/40'
+                                                                    : 'bg-muted/30 text-muted-foreground/30'
                                                             }`}>
                                                             {isCompleted ? '✓' : ''}
                                                         </div>
