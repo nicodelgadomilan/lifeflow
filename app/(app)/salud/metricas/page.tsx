@@ -3,7 +3,7 @@ import { Activity, Dna, TrendingUp, Scale, Brain } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { MetricasForm } from '@/components/salud/metricas-form'
 import { MetricLineChart } from '@/components/salud/metric-line-chart'
-
+import { PhysicalProfileCard } from '@/components/salud/physical-profile'
 export default async function MetricasPage() {
     const supabase = await createClient()
 
@@ -23,15 +23,22 @@ export default async function MetricasPage() {
     const latestPressure = getLatest('Presion')
     const latestWater = getLatest('Agua')
     const latestSleep = getLatest('Sueno')
+    const latestPhysicalProfile = getLatest('PerfilFisico')
 
     const weightHistory = getHistory('Peso')
+
+    const currentHeightStr = latestPhysicalProfile?.value || latestHeight?.value
+    const currentHeight = currentHeightStr ? Number(currentHeightStr) : null
+    const currentGender = latestPhysicalProfile?.unit || null
+
+    const visibleMetrics = allMetrics.filter(m => m.type !== 'PerfilFisico')
 
     // IMC automático
     let imc: number | null = null
     let imcLabel = ''
     let imcColor = ''
-    if (latestWeight && latestHeight) {
-        const h = Number(latestHeight.value) / 100 // cm to m
+    if (latestWeight && currentHeight) {
+        const h = currentHeight / 100 // cm to m
         imc = Number(latestWeight.value) / (h * h)
         if (imc < 18.5) { imcLabel = 'Bajo peso'; imcColor = 'text-sky-500' }
         else if (imc < 25) { imcLabel = 'Normal ✓'; imcColor = 'text-emerald-500' }
@@ -50,6 +57,8 @@ export default async function MetricasPage() {
                 </div>
                 <MetricasForm />
             </div>
+
+            <PhysicalProfileCard currentHeight={currentHeight || undefined} currentGender={currentGender || undefined} />
 
             {/* Quick Summary Widgets */}
             <div className="grid gap-4 md:grid-cols-4 lg:grid-cols-5">
@@ -83,7 +92,7 @@ export default async function MetricasPage() {
                             {imc ? imc.toFixed(1) : '--'}
                         </div>
                         <p className={`text-xs mt-1 font-medium ${imcColor || 'text-muted-foreground'}`}>
-                            {imcLabel || (latestWeight && !latestHeight ? 'Falta altura' : 'Sin datos')}
+                            {imcLabel || (latestWeight && !currentHeight ? 'Falta altura' : 'Sin datos')}
                         </p>
                     </CardContent>
                 </Card>
@@ -135,13 +144,13 @@ export default async function MetricasPage() {
                         </CardHeader>
                         <CardContent className="flex-1 p-0 overflow-y-auto">
                             <div className="p-4 space-y-3">
-                                {allMetrics.length === 0 ? (
+                                {visibleMetrics.length === 0 ? (
                                     <div className="flex flex-col items-center justify-center p-8 text-center opacity-50 h-[300px]">
                                         <Activity className="h-12 w-12 text-sky-500 mb-4 opacity-50" />
                                         <p className="text-sm">Aún no registraste ninguna medida corporal.</p>
                                     </div>
                                 ) : (
-                                    allMetrics.map((met) => (
+                                    visibleMetrics.map((met) => (
                                         <div key={met.id} className="flex justify-between items-center bg-muted/20 p-4 rounded-xl border border-border/50">
                                             <div className="flex items-center gap-4">
                                                 <div className="w-10 h-10 bg-sky-500/10 text-sky-500 font-bold rounded-lg flex items-center justify-center uppercase text-xs">
@@ -194,7 +203,7 @@ export default async function MetricasPage() {
                                 <span>Bajo (18.5)</span><span>Normal (25)</span><span>Obeso (30+)</span>
                             </div>
                             <p className="text-xs text-muted-foreground mt-3">
-                                Peso: {latestWeight.value} kg · Altura: {latestHeight.value} cm
+                                Peso: {latestWeight.value} kg · Altura: {currentHeight} cm
                             </p>
                         </Card>
                     )}

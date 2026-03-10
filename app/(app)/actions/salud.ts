@@ -137,3 +137,30 @@ export async function addHealthMetric(formData: FormData) {
     revalidatePath('/salud')
     return { success: true }
 }
+
+export async function updatePhysicalProfile(formData: FormData) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'No autenticado' }
+
+    const heightStr = formData.get('height') as string
+    const gender = formData.get('gender') as string
+
+    if (!heightStr || !gender) return { error: 'Faltan datos' }
+
+    const { error } = await supabase
+        .from('health_metrics')
+        .insert({
+            user_id: user.id,
+            type: 'PerfilFisico',
+            value: parseFloat(heightStr),
+            unit: gender,
+            date: new Date().toISOString().slice(0, 10)
+        } as any)
+
+    if (error) return { error: 'Error al actualizar perfil físico' }
+
+    revalidatePath('/salud/metricas')
+    revalidatePath('/salud')
+    return { success: true }
+}
