@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Target, TrendingUp, Lightbulb, Trophy } from 'lucide-react'
+import { Target, TrendingUp, Lightbulb, Trophy, Flag } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { MetaForm } from '@/components/metas/meta-form'
 import { MetaItem } from '@/components/metas/meta-item'
@@ -12,9 +12,9 @@ export default async function MetasPage() {
 
     const { data: goals } = await supabase
         .from('goals')
-        .select('*')
+        .select('*, goal_milestones(*)')
         .eq('user_id', user.id)
-        .order('status', { ascending: false }) // first active, then completed (alphabetical 'a' vs 'c')
+        .order('status', { ascending: false })
         .order('target_date', { ascending: true })
 
     const list = (goals || []) as any[]
@@ -97,7 +97,7 @@ export default async function MetasPage() {
                                         <p className="text-sm">No tienes metas en curso actualmente.</p>
                                     </div>
                                 ) : (
-                                    activos.map((met) => <MetaItem key={met.id} meta={met} />)
+                                    activos.map((met) => <MetaItem key={met.id} meta={met} milestones={met.goal_milestones || []} />)
                                 )}
                             </div>
                         </CardContent>
@@ -132,14 +132,52 @@ export default async function MetasPage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="glass flex-1 flex flex-col border-none min-h-[300px] border border-border/50 text-center opacity-60">
-                        <CardContent className="p-8 flex flex-col items-center justify-center h-full">
-                            <Trophy className="h-12 w-12 text-primary/30 mb-8" />
-                            <div className="text-sm font-medium border border-dashed border-border/70 p-4 rounded-xl">
-                                En la Fase 3, podrás dividir cada objetivo en sub-tareas ("Hitos" o Milestones) con checkable y fecha propia.
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {/* RESUMEN DE HITOS */}
+                    {(() => {
+                        const allMilestones = list.flatMap((g: any) => g.goal_milestones || [])
+                        const totalMs = allMilestones.length
+                        const doneMs = allMilestones.filter((m: any) => m.is_done).length
+                        const pct = totalMs > 0 ? Math.round((doneMs / totalMs) * 100) : 0
+                        return (
+                            <Card className="glass flex flex-col gap-4 border-border/50 p-5">
+                                <div className="flex items-center gap-2">
+                                    <div className="p-2 bg-primary/10 rounded-lg">
+                                        <Flag className="h-4 w-4 text-primary" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-semibold">Resumen de Hitos</h4>
+                                        <p className="text-xs text-muted-foreground">Progreso global de sub-tareas</p>
+                                    </div>
+                                </div>
+                                {totalMs === 0 ? (
+                                    <p className="text-xs text-muted-foreground/60 italic">
+                                        Abre una meta y agregá hitos (sub-tareas) para desglosar tus objetivos.
+                                    </p>
+                                ) : (
+                                    <>
+                                        <div className="flex justify-between items-center text-sm">
+                                            <span className="text-muted-foreground">{doneMs} de {totalMs} completados</span>
+                                            <span className="font-bold font-mono text-primary">{pct}%</span>
+                                        </div>
+                                        <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-primary transition-all duration-700"
+                                                style={{ width: `${pct}%` }}
+                                            />
+                                        </div>
+                                        <div className="space-y-1 max-h-40 overflow-y-auto">
+                                            {allMilestones.filter((m: any) => !m.is_done).slice(0, 5).map((m: any) => (
+                                                <div key={m.id} className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-primary/50 flex-shrink-0" />
+                                                    <span className="truncate">{m.title}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </Card>
+                        )
+                    })()}
                 </div>
 
             </div>

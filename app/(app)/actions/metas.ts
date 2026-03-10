@@ -67,3 +67,46 @@ export async function updateGoalProgress(id: string, progress: number) {
     revalidatePath('/metas')
     return { success: true }
 }
+
+export async function addMilestone(goalId: string, title: string, dueDate?: string) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return { error: 'No autenticado' }
+    if (!title.trim()) return { error: 'El título es obligatorio' }
+
+    const { error } = await supabase
+        .from('goal_milestones')
+        .insert({
+            user_id: user.id,
+            goal_id: goalId,
+            title: title.trim(),
+            due_date: dueDate || null
+        } as any)
+
+    if (error) return { error: 'Error al crear el hito' }
+    revalidatePath('/metas')
+    return { success: true }
+}
+
+export async function toggleMilestone(id: string, isDone: boolean) {
+    const supabase = await createClient()
+    const { error } = await (supabase.from('goal_milestones') as any)
+        .update({ is_done: isDone })
+        .eq('id', id)
+
+    if (error) return { error: 'Error al actualizar el hito' }
+    revalidatePath('/metas')
+    return { success: true }
+}
+
+export async function deleteMilestone(id: string) {
+    const supabase = await createClient()
+    const { error } = await supabase
+        .from('goal_milestones')
+        .delete()
+        .eq('id', id)
+
+    if (error) return { error: 'Error al eliminar el hito' }
+    revalidatePath('/metas')
+    return { success: true }
+}

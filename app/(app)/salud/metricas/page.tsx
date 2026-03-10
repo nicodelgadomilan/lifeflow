@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Activity, Dna, TrendingUp } from 'lucide-react'
+import { Activity, Dna, TrendingUp, Scale, Brain } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { MetricasForm } from '@/components/salud/metricas-form'
+import { MetricLineChart } from '@/components/salud/metric-line-chart'
 
 export default async function MetricasPage() {
     const supabase = await createClient()
@@ -10,16 +11,33 @@ export default async function MetricasPage() {
         .from('health_metrics')
         .select('*')
         .order('date', { ascending: false })
-        .limit(20)
+        .limit(60) // enough history for charts
 
     const allMetrics = (metrics || []) as any[]
 
     const getLatest = (type: string) => allMetrics.find(m => m.type === type)
+    const getHistory = (type: string) => allMetrics.filter(m => m.type === type)
 
     const latestWeight = getLatest('Peso')
+    const latestHeight = getLatest('Altura')
     const latestPressure = getLatest('Presion')
     const latestWater = getLatest('Agua')
     const latestSleep = getLatest('Sueno')
+
+    const weightHistory = getHistory('Peso')
+
+    // IMC automático
+    let imc: number | null = null
+    let imcLabel = ''
+    let imcColor = ''
+    if (latestWeight && latestHeight) {
+        const h = Number(latestHeight.value) / 100 // cm to m
+        imc = Number(latestWeight.value) / (h * h)
+        if (imc < 18.5) { imcLabel = 'Bajo peso'; imcColor = 'text-sky-500' }
+        else if (imc < 25) { imcLabel = 'Normal ✓'; imcColor = 'text-emerald-500' }
+        else if (imc < 30) { imcLabel = 'Sobrepeso'; imcColor = 'text-amber-500' }
+        else { imcLabel = 'Obesidad'; imcColor = 'text-destructive' }
+    }
 
     return (
         <div className="space-y-6 animate-fade-in">
@@ -34,15 +52,39 @@ export default async function MetricasPage() {
             </div>
 
             {/* Quick Summary Widgets */}
-            <div className="grid gap-4 md:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-4 lg:grid-cols-5">
                 <Card className="glass card-hover border-sky-500/20 bg-sky-500/5">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium text-sky-500">Peso</CardTitle>
+                        <Scale className="h-4 w-4 text-sky-500 opacity-60" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-sky-500">
                             {latestWeight ? `${latestWeight.value} ${latestWeight.unit}` : '--'}
                         </div>
+                        {weightHistory.length > 1 && (() => {
+                            const prev = weightHistory[1]
+                            const diff = Number(latestWeight.value) - Number(prev.value)
+                            return <p className={`text-xs mt-1 ${diff < 0 ? 'text-emerald-500' : diff > 0 ? 'text-amber-500' : 'text-muted-foreground'}`}>
+                                {diff > 0 ? '+' : ''}{diff.toFixed(1)} kg vs anterior
+                            </p>
+                        })()}
+                    </CardContent>
+                </Card>
+
+                {/* IMC automático */}
+                <Card className={`glass card-hover ${imc ? 'border-emerald-500/20 bg-emerald-500/5' : 'border-border/20'}`}>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground">IMC</CardTitle>
+                        <Brain className="h-4 w-4 text-muted-foreground opacity-60" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className={`text-2xl font-bold ${imcColor || 'text-muted-foreground'}`}>
+                            {imc ? imc.toFixed(1) : '--'}
+                        </div>
+                        <p className={`text-xs mt-1 font-medium ${imcColor || 'text-muted-foreground'}`}>
+                            {imcLabel || (latestWeight && !latestHeight ? 'Falta altura' : 'Sin datos')}
+                        </p>
                     </CardContent>
                 </Card>
 
@@ -80,18 +122,16 @@ export default async function MetricasPage() {
                 </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
 
                 {/* HISTORIAL TABLA */}
-                <div className="flex flex-col gap-6 md:col-span-8">
-                    <Card className="glass flex-1 flex flex-col border-sky-500/10 min-h-[500px]">
+                <div className="flex flex-col gap-6 md:col-span-7">
+                    <Card className="glass flex-1 flex flex-col border-sky-500/10 min-h-[400px]">
                         <CardHeader className="border-b border-border/50 bg-sky-500/5 pb-4">
-                            <div>
-                                <CardTitle className="flex items-center gap-2">
-                                    <Dna className="h-5 w-5 text-sky-500" />
-                                    Historial de Cargas
-                                </CardTitle>
-                            </div>
+                            <CardTitle className="flex items-center gap-2">
+                                <Dna className="h-5 w-5 text-sky-500" />
+                                Historial de Cargas
+                            </CardTitle>
                         </CardHeader>
                         <CardContent className="flex-1 p-0 overflow-y-auto">
                             <div className="p-4 space-y-3">
@@ -123,16 +163,42 @@ export default async function MetricasPage() {
                     </Card>
                 </div>
 
-                {/* SIDEBAR ESPACIO RESERVADO GRAFICOS */}
-                <div className="flex flex-col gap-6 md:col-span-4">
-                    <Card className="glass flex-1 flex flex-col border-none min-h-[500px] items-center justify-center p-6 text-center">
-                        <TrendingUp className="h-12 w-12 text-muted-foreground mb-4 opacity-30" />
-                        <p className="text-sm text-muted-foreground/80 max-w-[200px]">
-                            Para la Fase 3, aquí se incluirá un panel interactivo con gráficas de evolución mensual de peso e IMC automatizadas con Recharts.
-                        </p>
+                {/* GRÁFICO EVOLUCIÓN PESO + IMC */}
+                <div className="flex flex-col gap-6 md:col-span-5">
+                    <Card className="glass flex flex-col border-sky-500/10 p-5">
+                        <CardHeader className="p-0 mb-4">
+                            <CardTitle className="flex items-center gap-2 text-sm">
+                                <TrendingUp className="h-4 w-4 text-sky-500" />
+                                Evolución del Peso
+                            </CardTitle>
+                            <CardDescription>Histórico de todos tus registros</CardDescription>
+                        </CardHeader>
+                        <MetricLineChart metrics={weightHistory} type="Peso" color="#0ea5e9" />
                     </Card>
-                </div>
 
+                    {/* IMC Card informativo */}
+                    {imc && (
+                        <Card className={`glass p-5 border-l-4 ${imc < 18.5 ? 'border-l-sky-500' : imc < 25 ? 'border-l-emerald-500' : imc < 30 ? 'border-l-amber-500' : 'border-l-destructive'}`}>
+                            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Índice de Masa Corporal</p>
+                            <div className="flex items-end gap-3">
+                                <span className={`text-4xl font-black ${imcColor}`}>{imc.toFixed(1)}</span>
+                                <span className={`text-sm font-semibold mb-1 ${imcColor}`}>{imcLabel}</span>
+                            </div>
+                            <div className="mt-3 h-2 rounded-full bg-muted/40 overflow-hidden">
+                                <div
+                                    className={`h-full rounded-full transition-all ${imc < 18.5 ? 'bg-sky-500' : imc < 25 ? 'bg-emerald-500' : imc < 30 ? 'bg-amber-500' : 'bg-destructive'}`}
+                                    style={{ width: `${Math.min(100, (imc / 40) * 100)}%` }}
+                                />
+                            </div>
+                            <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+                                <span>Bajo (18.5)</span><span>Normal (25)</span><span>Obeso (30+)</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-3">
+                                Peso: {latestWeight.value} kg · Altura: {latestHeight.value} cm
+                            </p>
+                        </Card>
+                    )}
+                </div>
             </div>
         </div>
     )

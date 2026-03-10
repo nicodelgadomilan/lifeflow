@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Trash2, FileWarning, Key } from 'lucide-react'
+import { Trash2, FileWarning, Key, ExternalLink, Paperclip } from 'lucide-react'
 import { deleteVehicleDocument } from '@/app/(app)/actions/vehiculo'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -59,7 +59,7 @@ export function PapelItem({ doc }: DocProps) {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4 w-full sm:w-auto justify-between sm:justify-end">
+                <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
                     {!isExpired && (
                         <div className="text-right">
                             <span className={`text-xl font-bold block ${isUrgent ? 'text-orange-500 animate-pulse' : 'text-emerald-500'}`}>
@@ -67,6 +67,22 @@ export function PapelItem({ doc }: DocProps) {
                             </span>
                             <span className="text-[10px] uppercase tracking-widest text-muted-foreground mr-1">días faltan</span>
                         </div>
+                    )}
+                    {/* Botón ver documento adjunto */}
+                    {doc.file_url ? (
+                        <a
+                            href={doc.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 transition-colors font-medium"
+                        >
+                            <ExternalLink className="h-3.5 w-3.5" />
+                            Ver doc
+                        </a>
+                    ) : (
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground/50 border border-dashed border-border/30 px-2 py-1 rounded">
+                            <Paperclip className="h-3 w-3" /> Sin archivo
+                        </span>
                     )}
                     <Button
                         variant="ghost"

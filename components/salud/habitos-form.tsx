@@ -21,10 +21,13 @@ import { useRouter } from 'next/navigation'
 export function HabitosForm({ children }: { children?: React.ReactNode }) {
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [timeOfDay, setTimeOfDay] = useState('any')
     const router = useRouter()
 
     async function onSubmit(formData: FormData) {
         setLoading(true)
+        // Asegurar que el valor del Select esté en el FormData
+        formData.set('time_of_day', timeOfDay)
         const res = await addHabit(formData)
         setLoading(false)
 
@@ -33,6 +36,7 @@ export function HabitosForm({ children }: { children?: React.ReactNode }) {
         } else {
             toast.success('Nuevo hábito creado')
             setOpen(false)
+            setTimeOfDay('any') // reset
             router.refresh()
         }
     }
@@ -62,9 +66,11 @@ export function HabitosForm({ children }: { children?: React.ReactNode }) {
 
                     <div className="space-y-2">
                         <Label htmlFor="time_of_day">Momento del Día</Label>
-                        <Select name="time_of_day" defaultValue="any">
+                        {/* Input hidden para que FormData reciba el valor correctamente */}
+                        <input type="hidden" name="time_of_day" value={timeOfDay} />
+                        <Select value={timeOfDay} onValueChange={(v: string | null) => { if (v) setTimeOfDay(v) }}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Día" />
+                                <SelectValue placeholder="Elegí un momento" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="morning">Rutina de Mañana</SelectItem>

@@ -10,6 +10,44 @@ export function formatCurrency(amount: number, currency: string = 'ARS'): string
     }).format(amount)
 }
 
+// Convierte un monto de cualquier moneda a ARS
+export function convertToARS(
+    amount: number,
+    currency: string,
+    rates: { usd_rate: number; eur_rate: number; usd_blue_rate?: number }
+): number {
+    if (currency === 'ARS') return amount
+    if (currency === 'USD') return amount * rates.usd_rate
+    if (currency === 'USD_BLUE') return amount * (rates.usd_blue_rate || rates.usd_rate)
+    if (currency === 'EUR') return amount * rates.eur_rate
+    return amount
+}
+
+// Formatea un monto con su moneda original y el equivalente en ARS
+export function formatAmountWithRate(
+    amount: number,
+    currency: string,
+    rates: { usd_rate: number; eur_rate: number; usd_blue_rate?: number }
+): { original: string; ars: string; arsValue: number } {
+    const ars = convertToARS(amount, currency, rates)
+    return {
+        original: currency === 'ARS' ? formatCurrency(amount, 'ARS') : `${currency} ${amount.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+        ars: formatCurrency(ars, 'ARS'),
+        arsValue: ars
+    }
+}
+
+export const CURRENCY_LABELS: Record<string, string> = {
+    ARS: '🇦🇷 ARS – Peso',
+    USD: '🇺🇸 USD – Dólar oficial',
+    USD_BLUE: '💵 USD Blue',
+    EUR: '🇪🇺 EUR – Euro'
+}
+
+export const CURRENCY_SYMBOLS: Record<string, string> = {
+    ARS: '$', USD: 'U$D', USD_BLUE: 'U$D', EUR: '€'
+}
+
 export function formatDate(date: string | Date): string {
     return format(new Date(date), 'dd MMM yyyy', { locale: es })
 }

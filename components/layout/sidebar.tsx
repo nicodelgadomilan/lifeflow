@@ -12,7 +12,9 @@ import {
     Car,
     Files,
     Target,
-    ChevronDown
+    ChevronDown,
+    Briefcase,
+    Settings
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -59,6 +61,16 @@ const vehicleLinks = [
     { name: 'Papeles', href: '/vehiculo/documentos' },
 ]
 
+const trabajoLinks = [
+    { name: 'Resumen', href: '/trabajo' },
+    { name: 'Proyectos', href: '/trabajo/proyectos' },
+    { name: 'Tareas', href: '/trabajo/tareas' },
+    { name: 'Reuniones', href: '/trabajo/reuniones' },
+    { name: 'Cobros', href: '/trabajo/cobros' },
+    { name: 'Pagos', href: '/trabajo/pagos' },
+    { name: 'Tributación', href: '/trabajo/tributacion' },
+]
+
 export function Sidebar() {
     const pathname = usePathname()
     // Finanzas State
@@ -80,6 +92,10 @@ export function Sidebar() {
     // Vehicle State
     const isVehicleActive = pathname.startsWith('/vehiculo')
     const [isVehicleOpen, setIsVehicleOpen] = useState(isVehicleActive)
+
+    // Trabajo State
+    const isTrabajoActive = pathname.startsWith('/trabajo')
+    const [isTrabajoOpen, setIsTrabajoOpen] = useState(isTrabajoActive)
 
     return (
         <div className="hidden md:flex md:w-64 md:flex-col glass border-r border-border/50">
@@ -347,6 +363,53 @@ export function Sidebar() {
                         )}
                     </div>
 
+                    {/* Módulo Trabajo Acordeón */}
+                    <div className="pt-2">
+                        <button
+                            onClick={() => setIsTrabajoOpen(!isTrabajoOpen)}
+                            className={cn(
+                                isTrabajoActive
+                                    ? 'bg-primary/5 text-primary'
+                                    : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                                'group flex w-full items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition-all'
+                            )}
+                        >
+                            <div className="flex items-center">
+                                <Briefcase className={cn(
+                                    isTrabajoActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                                    'mr-3 flex-shrink-0 h-5 w-5'
+                                )} />
+                                Trabajo
+                            </div>
+                            <ChevronDown className={cn(
+                                "h-4 w-4 transition-transform",
+                                isTrabajoOpen ? "rotate-180" : ""
+                            )} />
+                        </button>
+
+                        {isTrabajoOpen && (
+                            <div className="mt-1 space-y-1 px-3 pl-11 pb-2 animate-fade-in">
+                                {trabajoLinks.map((item) => {
+                                    const isActive = pathname === item.href || (item.href !== '/trabajo' && pathname.startsWith(item.href))
+                                    return (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className={cn(
+                                                isActive
+                                                    ? 'text-primary font-semibold'
+                                                    : 'text-muted-foreground hover:text-foreground',
+                                                'group flex items-center px-3 py-1.5 text-sm transition-all rounded-md'
+                                            )}
+                                        >
+                                            {item.name}
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                        )}
+                    </div>
+
                     <div className="pt-2 space-y-1">
                         {mainNavigation.map((item) => {
                             const isActive = pathname.startsWith(item.href)
@@ -374,6 +437,25 @@ export function Sidebar() {
                         })}
                     </div>
                 </nav>
+
+                {/* Link de Configuración al fondo */}
+                <div className="px-4 pb-4 mt-auto border-t border-border/30 pt-3">
+                    <Link
+                        href="/configuracion"
+                        className={cn(
+                            pathname === '/configuracion'
+                                ? 'bg-primary/10 text-primary'
+                                : 'text-muted-foreground hover:bg-muted hover:text-foreground',
+                            'group flex items-center px-3 py-2.5 text-sm font-medium rounded-xl transition-all'
+                        )}
+                    >
+                        <Settings className={cn(
+                            pathname === '/configuracion' ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground',
+                            'mr-3 flex-shrink-0 h-5 w-5'
+                        )} />
+                        Configuración
+                    </Link>
+                </div>
             </div>
         </div>
     )

@@ -1,0 +1,1 @@
+ALTER TABLE credit_cards ADD COLUMN IF NOT EXISTS interest_rate DECIMAL(5,2) DEFAULT 0;

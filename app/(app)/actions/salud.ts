@@ -22,7 +22,10 @@ export async function addHabit(formData: FormData) {
             time_of_day
         } as any)
 
-    if (error) return { error: 'Error al crear hábito' }
+    if (error) {
+        console.error('[addHabit] error:', error)
+        return { error: error.message || 'Error al crear hábito' }
+    }
 
     revalidatePath('/salud/habitos')
     return { success: true }

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Trash2, FileText, Lock, FileDigit, ShieldAlert, MoreVertical } from 'lucide-react'
+import { Trash2, FileText, Lock, FileDigit, ShieldAlert, MoreVertical, ExternalLink, Paperclip } from 'lucide-react'
 import { deleteDocument } from '@/app/(app)/actions/documentos'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -68,20 +68,29 @@ export function DocumentoItem({ doc }: DocProps) {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-1 w-full sm:w-auto justify-end">
-                    {/* Bóveda PDF (placeholder) */}
-                    <span className="text-xs text-muted-foreground px-2 py-1 rounded bg-muted/20 border border-dashed border-border/40 sm:mr-2">
-                        Sin PDF alojado
-                    </span>
+                <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                    {/* Botón de ver archivo — funcional si tiene file_url real */}
+                    {doc.file_url && doc.file_url !== '#' ? (
+                        <a
+                            href={doc.file_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-colors font-medium"
+                        >
+                            <ExternalLink className="h-3.5 w-3.5" />
+                            Ver archivo
+                        </a>
+                    ) : (
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground px-2 py-1 rounded bg-muted/20 border border-dashed border-border/40">
+                            <Paperclip className="h-3 w-3" /> Sin archivo
+                        </span>
+                    )}
 
                     <Popover>
                         <PopoverTrigger className="inline-flex items-center justify-center rounded-md hover:bg-muted text-muted-foreground h-8 w-8">
                             <MoreVertical className="h-4 w-4" />
                         </PopoverTrigger>
                         <PopoverContent align="end" className="w-[160px] p-1 gap-1 flex flex-col glass border-border/50">
-                            <Button variant="ghost" className="justify-start h-8 text-muted-foreground cursor-not-allowed">
-                                Ver Archivo (Aprox)
-                            </Button>
                             <Button variant="ghost" className="justify-start h-8 text-rose-500 hover:text-rose-600 hover:bg-rose-500/10" onClick={handleDelete}>
                                 <Trash2 className="h-4 w-4 mr-2" /> Eliminar
                             </Button>

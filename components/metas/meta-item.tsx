@@ -6,12 +6,21 @@ import { Trash2, Target, CheckCircle, Lightbulb, TrendingUp } from 'lucide-react
 import { deleteGoal, updateGoalProgress, toggleGoalStatus } from '@/app/(app)/actions/metas'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
+import { MilestoneList } from './milestone-list'
+
+interface MilestoneData {
+    id: string
+    title: string
+    is_done: boolean
+    due_date?: string | null
+}
 
 interface MetaProps {
     meta: any
+    milestones?: MilestoneData[]
 }
 
-export function MetaItem({ meta }: MetaProps) {
+export function MetaItem({ meta, milestones = [] }: MetaProps) {
     const [loading, setLoading] = useState(false)
     const [progress, setProgress] = useState(meta.progress || 0)
 
@@ -88,7 +97,7 @@ export function MetaItem({ meta }: MetaProps) {
                         {!isComplete && (
                             <div className="mt-4 pt-4 border-t border-border/50 max-w-sm">
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="text-xs font-semibold text-muted-foreground">Progreso</span>
+                                    <span className="text-xs font-semibold text-muted-foreground">Progreso manual</span>
                                     <span className="text-xs font-bold font-mono">{progress}%</span>
                                 </div>
                                 <div className="flex items-center gap-3">
@@ -105,6 +114,13 @@ export function MetaItem({ meta }: MetaProps) {
                                 </div>
                             </div>
                         )}
+
+                        {/* MILESTONES */}
+                        <MilestoneList
+                            goalId={meta.id}
+                            milestones={milestones}
+                            isGoalComplete={isComplete}
+                        />
                     </div>
                 </div>
 

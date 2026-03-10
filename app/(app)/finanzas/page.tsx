@@ -111,13 +111,9 @@ export default async function FinanzasResumenPage() {
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
 
-                {/* Gráfico Barras */}
-                <Card className="glass lg:col-span-4 h-96 flex flex-col justify-between">
-                    <CardHeader>
-                        <CardTitle>Comparativa Mensual</CardTitle>
-                        <CardDescription>Ingresos vs Egresos históricos</CardDescription>
-                    </CardHeader>
-                    <div className="flex-1 min-h-0">
+                {/* Gráfico de Área — estilo dark premium */}
+                <Card className="lg:col-span-4 h-[400px] flex flex-col bg-zinc-950 border-zinc-800/60 shadow-2xl overflow-hidden">
+                    <div className="flex-1 min-h-0 p-5 pb-3">
                         <DashboardChart data={chartData} />
                     </div>
                 </Card>

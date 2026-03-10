@@ -16,6 +16,9 @@ export async function addTransaction(formData: FormData) {
     const category = formData.get('category') as string
     const description = formData.get('description') as string
     const date = formData.get('date') as string
+    const currency = (formData.get('currency') as string) || 'ARS'
+    const amount_ars_raw = formData.get('amount_ars') as string
+    const amount_ars = amount_ars_raw ? parseFloat(amount_ars_raw) : amount
 
     if (!type || !amount || !category || !date) {
         return { error: 'Faltan campos obligatorios' }
@@ -29,7 +32,9 @@ export async function addTransaction(formData: FormData) {
             amount,
             category,
             description,
-            date
+            date,
+            currency,
+            amount_ars
         } as any)
 
     if (error) {

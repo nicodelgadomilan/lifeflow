@@ -2523,3 +2523,79 @@ TypeError: fetch failed
 
 ✓ Starting...
 ✓ Ready in 964ms
+ GET /dashboard 200 in 1506ms (compile: 379ms, proxy.ts: 219ms, render: 908ms)
+✓ Compiled in 489ms
+✓ Compiled in 689ms
+ GET /dashboard 200 in 1630ms (compile: 67ms, proxy.ts: 786ms, render: 777ms)
+ GET /finanzas/transacciones 200 in 610ms (compile: 54ms, proxy.ts: 295ms, render: 261ms)
+ GET /finanzas/suscripciones 200 in 627ms (compile: 40ms, proxy.ts: 279ms, render: 307ms)
+ GET /finanzas/servicios 200 in 373ms (compile: 32ms, proxy.ts: 233ms, render: 109ms)
+ GET /finanzas/servicios 200 in 1324ms (compile: 9ms, proxy.ts: 344ms, render: 972ms)
+ GET /finanzas/tarjetas 200 in 614ms (compile: 45ms, proxy.ts: 553ms, render: 16ms)
+ GET /finanzas/ahorros 200 in 289ms (compile: 56ms, proxy.ts: 220ms, render: 13ms)
+ GET /finanzas/tarjetas 200 in 232ms (compile: 6ms, proxy.ts: 216ms, render: 10ms)
+ GET /finanzas/servicios 200 in 343ms (compile: 8ms, proxy.ts: 315ms, render: 19ms)
+ GET /metas 200 in 1221ms (compile: 149ms, proxy.ts: 415ms, render: 657ms)
+ GET /documentos 200 in 975ms (compile: 171ms, proxy.ts: 335ms, render: 469ms)
+ GET /vehiculo/mantenimiento 200 in 1278ms (compile: 488ms, proxy.ts: 308ms, render: 483ms)
+ GET /finanzas/servicios 200 in 235ms (compile: 5ms, proxy.ts: 215ms, render: 15ms)
+✓ Compiled in 83ms
+✓ Compiled in 310ms
+ GET /finanzas/servicios 200 in 984ms (compile: 221ms, proxy.ts: 350ms, render: 413ms)
+✓ Compiled in 67ms
+✓ Compiled in 36ms
+✓ Compiled in 88ms
+ GET /finanzas/servicios 200 in 1517ms (compile: 85ms, proxy.ts: 658ms, render: 774ms)
+✓ Compiled in 90ms
+✓ Compiled in 203ms
+ GET /finanzas/servicios 200 in 982ms (compile: 80ms, proxy.ts: 402ms, render: 500ms)
+ GET /finanzas/tarjetas 200 in 625ms (compile: 18ms, proxy.ts: 585ms, render: 22ms)
+✓ Compiled in 89ms
+ GET /finanzas/tarjetas 200 in 1175ms (compile: 15ms, proxy.ts: 533ms, render: 627ms)
+✓ Compiled in 92ms
+✓ Compiled in 315ms
+ GET /finanzas/tarjetas 200 in 1131ms (compile: 225ms, proxy.ts: 476ms, render: 430ms)
+ GET /finanzas/ahorros 200 in 1289ms (compile: 30ms, proxy.ts: 1238ms, render: 21ms)
+ GET /deportes 200 in 2.0s (compile: 255ms, proxy.ts: 658ms, render: 1101ms)
+ GET /deportes/clases 200 in 691ms (compile: 92ms, proxy.ts: 284ms, render: 316ms)
+ GET /finanzas 200 in 2.6s (compile: 580ms, proxy.ts: 1600ms, render: 446ms)
+ GET /finanzas/tarjetas 200 in 886ms (compile: 8ms, proxy.ts: 326ms, render: 552ms)
+ GET /finanzas/ahorros 200 in 3.7s (compile: 453ms, proxy.ts: 1271ms, render: 1930ms)
+✓ Compiled in 38.2s
+ GET /finanzas/ahorros 200 in 7.7s (compile: 464ms, proxy.ts: 1603ms, render: 5.7s)
+ GET /dashboard 200 in 1507ms (compile: 25ms, proxy.ts: 384ms, render: 1097ms)
+✓ Compiled in 27.6s
+ GET /finanzas/activos 200 in 1481ms (compile: 237ms, proxy.ts: 1168ms, render: 76ms)
+ GET /finanzas/ahorros 200 in 3.4s (compile: 112ms, proxy.ts: 2.4s, render: 913ms)
+✓ Compiled in 5.3s
+ GET /finanzas/activos 200 in 43s (compile: 3.2s, proxy.ts: 13.5s, render: 26.7s)
+ GET /metas 200 in 1566ms (compile: 34ms, proxy.ts: 511ms, render: 1021ms)
+✓ Compiled in 319ms
+ GET /metas 200 in 616ms (compile: 4ms, proxy.ts: 245ms, render: 367ms)
+ GET /documentos 200 in 873ms (compile: 10ms, proxy.ts: 253ms, render: 610ms)
+ GET /vehiculo/mantenimiento 200 in 843ms (compile: 7ms, proxy.ts: 241ms, render: 595ms)
+ GET /vehiculo/reparaciones 200 in 1223ms (compile: 367ms, proxy.ts: 303ms, render: 554ms)
+ GET /vehiculo/documentos 200 in 1155ms (compile: 392ms, proxy.ts: 223ms, render: 540ms)
+ GET /finanzas 200 in 892ms (compile: 13ms, proxy.ts: 220ms, render: 659ms)
+ GET /finanzas/activos 200 in 39.3s (compile: 3.1s, proxy.ts: 7.3s, render: 28.9s)
+ GET /finanzas/activos 200 in 38.8s (compile: 3.2s, proxy.ts: 10.8s, render: 24.8s)
+ GET /dashboard 200 in 12.1s (compile: 3.9s, proxy.ts: 7.2s, render: 1041ms)
+ GET /finanzas/activos 200 in 21.5s (compile: 4.1s, proxy.ts: 14.2s, render: 3.1s)
+ GET /finanzas/ahorros 200 in 40.0s (compile: 3.2s, proxy.ts: 13.1s, render: 23.7s)
+ GET /finanzas 200 in 42s (compile: 3.3s, proxy.ts: 11.8s, render: 26.6s)
+ GET /finanzas/activos 200 in 847ms (compile: 8ms, proxy.ts: 329ms, render: 510ms)
+ GET /dashboard 200 in 1388ms (compile: 9ms, proxy.ts: 346ms, render: 1033ms)
+✓ Compiled in 51.4s
+ GET /deportes/clases 200 in 916ms (compile: 64ms, proxy.ts: 453ms, render: 399ms)
+ GET /deportes/gimnasio 200 in 923ms (compile: 144ms, proxy.ts: 246ms, render: 534ms)
+ GET /deportes/gimnasio 200 in 1276ms (compile: 61ms, proxy.ts: 615ms, render: 600ms)
+ GET /deportes/timer 200 in 821ms (compile: 357ms, proxy.ts: 361ms, render: 103ms)
+ GET /salud 200 in 1320ms (compile: 166ms, proxy.ts: 464ms, render: 690ms)
+ GET /salud/citas 200 in 924ms (compile: 227ms, proxy.ts: 310ms, render: 387ms)
+ GET /dashboard 200 in 2.1s (compile: 117ms, proxy.ts: 256ms, render: 1691ms)
+ GET /metas 200 in 54s (compile: 4.0s, proxy.ts: 16.4s, render: 34.1s)
+ GET /documentos 200 in 44s (compile: 4.1s, proxy.ts: 9.6s, render: 30.3s)
+ GET /salud/habitos 200 in 23.5s (compile: 1738ms, proxy.ts: 6.1s, render: 15.7s)
+ GET /salud/habitos 200 in 17.9s (compile: 2.1s, proxy.ts: 2.5s, render: 13.3s)
+ GET /finanzas 200 in 26.3s (compile: 962ms, proxy.ts: 2.1s, render: 23.2s)
+ GET /salud/habitos 200 in 27.2s (compile: 566ms, proxy.ts: 2.9s, render: 23.8s)
