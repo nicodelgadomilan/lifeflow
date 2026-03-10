@@ -46,7 +46,7 @@
   --ring: hsl(240, 100%, 75%);
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
